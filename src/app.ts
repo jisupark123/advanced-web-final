@@ -4,7 +4,9 @@ import nunjucks from 'nunjucks';
 import path from 'path';
 import rootRouter from './routes/root';
 import ingredientsRouter from './routes/ingredients';
+import devRouter from './routes/dev';
 import db, { sequelize } from './models/db';
+import recipeRouter from './routes/recipe';
 
 const app = express();
 
@@ -19,6 +21,8 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use('/api', rootRouter);
 app.use('/api/ingredients', ingredientsRouter);
+app.use('/api/recipe', recipeRouter);
+app.use('/api/dev', devRouter);
 
 app.listen(3000, async () => {
   console.log('listening to http://localhost:3000');

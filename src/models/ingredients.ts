@@ -1,10 +1,7 @@
 import { Sequelize, Model, NUMBER, STRING } from 'sequelize';
 import User from './user';
 import { DBType } from './db';
-
-// 식재료 보관 장소
-
-type StorageArea = 'freezer' | 'fridge' | 'roomTemp';
+import StorageArea from '../types/storageAreaType';
 
 interface StoredIngredientType {
   id?: number;

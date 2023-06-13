@@ -4,6 +4,7 @@ import nunjucks from 'nunjucks';
 import path from 'path';
 import rootRouter from './routes/root';
 import ingredientsRouter from './routes/ingredients';
+import db, { sequelize } from './models/db';
 
 const app = express();
 
@@ -19,6 +20,22 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/api', rootRouter);
 app.use('/api/ingredients', ingredientsRouter);
 
-app.listen(3000, () => {
+app.listen(3000, async () => {
   console.log('listening to http://localhost:3000');
+
+  await sequelize
+    .authenticate()
+    .then(() => console.log('db connect'))
+    .catch(console.log);
+
+  // // await db.StoredIngredient.create({
+  // //   name: '가지',
+  // //   category: '채소',
+  // //   storageArea: 'fridge',
+  // //   count: 1,
+  // //   expirationDate: '2023-06-06 14:50:09.338',
+  // //   userId: 3,
+  // // });
+  // const i = await db.StoredIngredient.findAll({});
+  // console.log(i);
 });

@@ -5,6 +5,7 @@ import db from '../../models/db';
 
 async function getIngredientsController(req: Request, res: Response<AppResponseType>) {
   const { userId } = req.headers;
+
   const ingredients = await db.StoredIngredient.findAll({ where: { userId: Number(userId) } });
 
   const ingredientsResponse = ingredients.map((ingredient) => {

@@ -36,6 +36,7 @@ function withController({ methods, privateMethods, controller }: ConfigType) {
         const { userId } = decode as JwtPayloadType;
         req.headers.userId = userId;
       } catch {
+        console.log('catch');
         return res.status(401).json({
           isSuccess: false,
           message: '유효하지 않거나 만료된 jwt 토큰입니다',

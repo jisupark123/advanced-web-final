@@ -4,6 +4,8 @@ import StorageArea, { storageAreaMapping } from '../types/storageAreaType';
 import { cls, getDDate } from '@/lib/utils';
 import AppResponseType from '@/types/appResponseType';
 import axios from 'axios';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 interface DataResponseType {
   categories: string[];
@@ -22,8 +24,13 @@ const Home = () => {
   const [data, setData] = useState<DataResponseType | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const router = useRouter();
+
   // tab에 해당하는 식재료들
   const currIngredients = data?.ingredients.filter((i) => i.storageArea === tab);
+  const currCategories = data?.categories.filter((category) =>
+    currIngredients?.map((i) => i.category).includes(category)
+  );
 
   useEffect(() => {
     (async () => {
@@ -61,9 +68,9 @@ const Home = () => {
           </button>
         ))}
       </div>
-      <main className=' h-full px-20 py-30 overflow-y-scroll'>
+      <main className=' h-full px-20 pt-30 pb-100 overflow-y-scroll '>
         {data && currIngredients?.length
-          ? data.categories.map((category) => {
+          ? currCategories?.map((category) => {
               const ingredients = currIngredients
                 .filter((i) => i.category === category)
                 .sort((a, b) => getDDate(b.expirationDate) - getDDate(a.expirationDate));
@@ -74,16 +81,29 @@ const Home = () => {
                   <div className=' w-full bg-[#D9D9D9] h-2 mt-5 mb-10'></div>
                   <div className='flex flex-wrap gap-5'>
                     {ingredients.map((i) => (
-                      <button key={i.id} className='flex mb-10'>
+                      <div key={i.id} className='flex mb-10'>
                         <div className='flex justify-center items-center py-0 px-5 text-white text-2 font-medium bg-carrot rounded-100 self-start z-10'>
                           {getDDate(i.expirationDate) > 0
-                            ? `+${getDDate(i.expirationDate)}`
-                            : getDDate(i.expirationDate)}
+                            ? `D+${getDDate(i.expirationDate)}`
+                            : getDDate(i.expirationDate) == 0
+                            ? `D-${getDDate(i.expirationDate)}`
+                            : `D${getDDate(i.expirationDate)}`}
                         </div>
-                        <div className='min-w-[30px] mt-5 ml-[-15px] flex justify-center items-center ml-[-5px] rounded-100 bg-[#F5F5F5] text-12 font-semibold py-5 px-10 self-end'>
+                        <button
+                          onClick={() =>
+                            router.push({
+                              pathname: '/ingredient',
+                              query: {
+                                mode: 'edit',
+                                ...i,
+                              },
+                            })
+                          }
+                          className='min-w-[30px] mt-5 ml-[-15px] flex justify-center items-center ml-[-5px] rounded-100 bg-[#F5F5F5] text-12 font-semibold py-5 px-10 self-end hover:bg-gray-200'
+                        >
                           {i.name}
-                        </div>
-                      </button>
+                        </button>
+                      </div>
                     ))}
                   </div>
                 </article>
@@ -97,9 +117,12 @@ const Home = () => {
         <button className=' absolute left-20 bottom-20 z-20 bg-carrot px-20 py-12 text-white text-16 font-semibold rounded-full'>
           오늘 뭐 먹지?
         </button>
-        <button className=' absolute right-20 bottom-20 z-20 bg-carrot px-20 py-12 text-white text-16 font-semibold rounded-full'>
+        <Link
+          href={'/categories'}
+          className=' absolute right-20 bottom-20 z-20 bg-carrot px-20 py-12 text-white text-16 font-semibold rounded-full'
+        >
           +
-        </button>
+        </Link>
       </main>
     </Layout>
   );

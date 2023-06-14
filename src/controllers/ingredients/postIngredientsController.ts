@@ -14,6 +14,7 @@ async function postIngredientsController(req: Request, res: Response<AppResponse
     typeof count !== 'number' ||
     typeof expirationDate !== 'string'
   ) {
+    console.log(count);
     return res.status(400).json({
       isSuccess: false,
       message: '데이터 형식이 올바르지 않습니다.',

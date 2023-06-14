@@ -31,7 +31,7 @@ app.use('/api/recipe', recipeRouter);
 app.use('/api/dev', devRouter);
 
 app.listen(3001, async () => {
-  console.log('express is listening to http://localhost:3001');
+  console.log('express is listening to http://localhost:3001\n client is listening to http://localhost:3000');
 
   await sequelize
     .authenticate()

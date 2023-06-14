@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --exec ts-node src/app.ts"
+    "start": "concurrently \"nodemon --exec ts-node src/app.ts\" \"cd frontend && npm run dev\""
   },
   "keywords": [],
   "author": "",
@@ -13,6 +13,7 @@
   "dependencies": {
     "@types/dotenv": "^8.2.0",
     "axios": "^1.4.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.1.4",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",

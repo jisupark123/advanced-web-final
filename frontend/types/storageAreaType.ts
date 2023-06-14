@@ -7,11 +7,7 @@ export function isStorageAreaType(a: string): a is StorageArea {
   return ['freezer', 'fridge', 'roomTemp'].includes(a);
 }
 
-type StorageAreaMapping = {
-  [key in StorageArea]: string;
-};
-
-export const storageAreaMapping: StorageAreaMapping = {
+export const storageAreaMapping = {
   freezer: '냉동실',
   fridge: '냉장고',
   roomTemp: '실온',

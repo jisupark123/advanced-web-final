@@ -2,6 +2,7 @@ import express from 'express';
 import 'dotenv/config';
 import nunjucks from 'nunjucks';
 import path from 'path';
+import cors from 'cors';
 import rootRouter from './routes/root';
 import ingredientsRouter from './routes/ingredients';
 import devRouter from './routes/dev';
@@ -16,6 +17,11 @@ nunjucks.configure(path.join(__dirname, 'views'), {
   watch: true,
 });
 
+app.use(
+  cors({
+    origin: '*',
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -24,8 +30,8 @@ app.use('/api/ingredients', ingredientsRouter);
 app.use('/api/recipe', recipeRouter);
 app.use('/api/dev', devRouter);
 
-app.listen(3000, async () => {
-  console.log('listening to http://localhost:3000');
+app.listen(3001, async () => {
+  console.log('express is listening to http://localhost:3001');
 
   await sequelize
     .authenticate()
